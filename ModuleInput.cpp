@@ -34,8 +34,18 @@ update_status ModuleInput::Update()
 	keyboard = SDL_GetKeyboardState(NULL);
 
 	// TODO 1: Make the application properly close when ESC is pressed (do not use exit())
+	SDL_Event event;
+
+	if (event.type == SDL_KEYDOWN)
+	{
+		if (event.key.keysym.sym == SDLK_ESCAPE)
+		{
+			SDL_Quit();
+		}
+	}
 
 	// Homework: Make the application close up when pressing “X” button of the window
+
 
 	return UPDATE_CONTINUE;
 }
