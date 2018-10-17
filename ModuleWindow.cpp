@@ -36,6 +36,15 @@ bool ModuleWindow::Init()
 
 		// TODO 2: Create options for RESIZABLE, SDL_WINDOW_BORDERLESS, SDL_WINDOW_RESIZABLE,
 		// SDL_WINDOW_FULLSCREEN_DESKTOP (same way as with FULLSCREEN)
+		else if (RESIZABLE == true)
+		{
+			flags |= SDL_WINDOW_RESIZABLE;
+			flags |= SDL_WINDOW_BORDERLESS;
+		}
+		else if (DESKTOP == true)
+		{
+			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+		}
 
 		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 
