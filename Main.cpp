@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "Globals.h"
 #include "SDL/include/SDL.h"
+#include "glew.h"
 
 #pragma comment( lib, "SDL/libx86/SDL2.lib" )
 #pragma comment( lib, "SDL/libx86/SDL2main.lib" )
@@ -45,6 +46,15 @@ int main(int argc, char ** argv)
 			{
 				state = MAIN_UPDATE;
 				LOG("Application Update --------------");
+
+				/* SDL_GL_CONTEXT */
+				SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE); 
+				SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1); 
+				SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24); 
+				SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8); 
+				SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3); 
+				SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+
 			}
 
 			break;
