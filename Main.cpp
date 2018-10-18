@@ -55,6 +55,8 @@ int main(int argc, char ** argv)
 				SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3); 
 				SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
+				/* glew initialization */
+				GLenum err = glewInit();
 			}
 
 			break;
@@ -62,6 +64,7 @@ int main(int argc, char ** argv)
 		case MAIN_UPDATE:
 		{
 			int update_return = App->Update();
+
 
 			if (update_return == UPDATE_ERROR)
 			{
