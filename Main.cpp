@@ -64,6 +64,14 @@ int main(int argc, char ** argv)
 				LOG("Renderer: %s", glGetString(GL_RENDERER));
 				LOG("OpenGL version supported %s", glGetString(GL_VERSION));
 				LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+
+				/* OpenGL Initialization */
+				glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+				glClearDepth(1.0f); glClearColor(0.f, 0.f, 0.f, 1.f);
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+				glEnable(GL_DEPTH_TEST); glFrontFace(GL_CCW);
+				glEnable(GL_CULL_FACE); glEnable(GL_TEXTURE_2D);
+				glViewport(0, 0, 1024, 768);
 			}
 
 			break;
