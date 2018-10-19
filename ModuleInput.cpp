@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "SDL/include/SDL.h"
+#include "glew.h"
 
 ModuleInput::ModuleInput()
 {}
@@ -29,7 +30,7 @@ bool ModuleInput::Init()
 // Called every draw update
 update_status ModuleInput::Update()
 {
-	SDL_PumpEvents();
+	SDL_PumpEvents(); 
 
 	keyboard = SDL_GetKeyboardState(NULL);
 
@@ -39,24 +40,30 @@ update_status ModuleInput::Update()
 
 	while (SDL_PollEvent(&event)) {
 		switch (event.type) {
+		case SDL_WINDOWEVENT:
+			if (event.window.event == SDL_WINDOWEVENT_RESIZED)
+			{
+				GLint newWidth = event.window.data1;
+				GLint newHeight = event.window.data2;
+				glViewport(0, 0, newWidth, newHeight);
+			}
 		case SDL_KEYDOWN:
 			if (event.key.keysym.sym == SDLK_ESCAPE)
 			{
 				LOG("Esca has been pressed");
 				SDL_Quit();
-				exit(-1);
+				exit(0);
 			}
 			break;
 
 			// Homework: Make the application close up when pressing “X” button of the window
 		case SDL_QUIT:
 			SDL_Quit();
-			exit(-1);
+			exit(0);
 			break;
 		}
+
 	}
-
-
 
 	return UPDATE_CONTINUE;
 }
