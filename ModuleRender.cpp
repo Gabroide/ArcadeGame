@@ -3,6 +3,7 @@
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
 #include "SDL/include/SDL.h"
+#include "glew.h"
 
 ModuleRender::ModuleRender()
 {
@@ -32,17 +33,35 @@ bool ModuleRender::Init()
 		ret = false;
 	}
 
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+	glClearDepth(1.0f);
+	glClearColor(0.f, 0.f, 0.f, 1.f);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_DEPTH_TEST);
+	glFrontFace(GL_CCW);
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_TEXTURE_2D);
+	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+
 	return ret;
 }
 
 // Called every draw update
 update_status ModuleRender::Update()
 {
-	SDL_RenderClear(renderer);
+	return UPDATE_CONTINUE;
+}
 
-	// TODO 5: Now that we have PreUpdate/PostUpdate/Update move things around so we can render :)
+// TODO 5: Now that we have PreUpdate/PostUpdate/Update move things around so we can render :)
+update_status ModuleRender : PreUpdate()
+{
+	glColor(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	return UPDATE_CONTINUE;
+}
 
-	SDL_RenderPresent(renderer);
+update_status ModuleRender : PostUpdate() 
+{
+	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
 }
 
