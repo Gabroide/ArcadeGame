@@ -2,7 +2,9 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "SDL/include/SDL.h"
-#include "glew.h"
+#include "Imgui/exemples/imgui_impl_opengl3.h"
+#include "imgui.h"
+#include "Imgui/exemples/imgui_impl_sdl.h"
 
 ModuleInput::ModuleInput()
 {}
@@ -30,40 +32,15 @@ bool ModuleInput::Init()
 // Called every draw update
 update_status ModuleInput::Update()
 {
-	SDL_PumpEvents(); 
+	//SDL_PumpEvents();
+	SDL_Event event;
+	
+	while (SDL_PollEvent(&event))
+	{
+		ImGui_ImplSDL2_ProcessEvent(&event);
+	}
 
 	keyboard = SDL_GetKeyboardState(NULL);
-
-	// TODO 1: Make the application properly close when ESC is pressed (do not use exit())
-	// TODO 1: Make the application properly close when ESC is pressed (do not use exit())
-	SDL_Event event;
-
-	while (SDL_PollEvent(&event)) {
-		switch (event.type) {
-		case SDL_WINDOWEVENT:
-			if (event.window.event == SDL_WINDOWEVENT_RESIZED)
-			{
-				GLint newWidth = event.window.data1;
-				GLint newHeight = event.window.data2;
-				glViewport(0, 0, newWidth, newHeight);
-			}
-		case SDL_KEYDOWN:
-			if (event.key.keysym.sym == SDLK_ESCAPE)
-			{
-				LOG("Esca has been pressed");
-				SDL_Quit();
-				exit(0);
-			}
-			break;
-
-			// Homework: Make the application close up when pressing “X” button of the window
-		case SDL_QUIT:
-			SDL_Quit();
-			exit(0);
-			break;
-		}
-
-	}
 
 	return UPDATE_CONTINUE;
 }

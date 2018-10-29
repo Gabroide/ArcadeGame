@@ -4,6 +4,10 @@
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
 #include "ModuleInput.h"
+#include "ModuleRenderExercise.h"
+#include "ModuleProgram.h"
+#include "ModuleEditor.h"
+#include "ModuleCamera.h"
 
 using namespace std;
 
@@ -11,25 +15,21 @@ Application::Application()
 {
 	// Order matters: they will Init/start/update in this order
 	modules.push_back(window = new ModuleWindow());
+	modules.push_back(editor = new ModuleEditor());
 	modules.push_back(renderer = new ModuleRender());
 	modules.push_back(textures = new ModuleTextures());
 	modules.push_back(input = new ModuleInput());
-
-	// TODO 7: Create a new "scene" module that loads a texture and draws it on the screen
-
-
-	// Homework: Create a new module to handle music and sound effects
+	modules.push_back(exercise = new ModuleRenderExercise());
+	modules.push_back(program = new ModuleProgram());
+	modules.push_back(camera = new ModuleCamera());
 }
 
 Application::~Application()
 {
-	// TODO 6: Free module memory and check the result in Dr. Memory
-	for (list<Module*>::iterator it = modules.begin(); it != modues.end(); ++it)
-		(*it)->CleanUp();
-
-	delete renderer;
-	delete window;
-	delete input;
+	for(list<Module*>::iterator it = modules.begin(); it != modules.end(); ++it)
+    {
+        delete *it;
+    }
 }
 
 bool Application::Init()
@@ -42,19 +42,29 @@ bool Application::Init()
 	return ret;
 }
 
-// TODO 4: We need to have three updates, add them: PreUpdate Update PostUpdate
 update_status Application::Update()
 {
 	update_status ret = UPDATE_CONTINUE;
+	float startTime = SDL_GetTicks();
 
-	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
+	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
 		ret = (*it)->PreUpdate();
 
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
 		ret = (*it)->Update();
 
-	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
+	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
 		ret = (*it)->PostUpdate();
+
+	float frameTime = SDL_GetTicks() - startTime;
+	float fps = 1000 / frameTime;
+
+	if (fpsLogIterator == fpsLog.size())
+		fpsLogIterator = 0;
+
+	msLog[fpsLogIterator] = frameTime;
+	fpsLog[fpsLogIterator++] = fps;
+	
 	return ret;
 }
 
